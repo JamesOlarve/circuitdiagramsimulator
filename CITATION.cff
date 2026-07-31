@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+title: "Circuit Builder & Simulator"
+type: software
+authors:
+  - family-names: Olarve
+    given-names: "James Salveo"
+    affiliation: "i-Nano Research Facility, De La Salle University Manila"
+version: "1.1"
+abstract: >-
+  A responsive, browser-based tool for drawing electrical schematics and
+  analyzing basic linear DC circuits.
+keywords:
+  - circuit simulator
+  - circuit diagram
+  - electrical schematic
+  - electronics education
+  - DC circuit analysis
+license: MIT
+url: "https://www.inanolab.com/circuit.html"
+preferred-citation:
+  type: software
+  authors:
+    - family-names: Olarve
+      given-names: "James Salveo"
+      affiliation: "i-Nano Research Facility, De La Salle University Manila"
+  title: "Circuit Builder & Simulator"
+  version: "1.1"
+  year: 2026
+  publisher:
+    name: "i-Nano Research Facility, De La Salle University Manila"
+  url: "https://www.inanolab.com/circuit.html"
