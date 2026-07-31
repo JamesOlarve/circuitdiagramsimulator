@@ -1,6 +1,6 @@
 # Circuit Builder & Simulator
 
-**Version:** 1.0.0
+**Version:** 1.1.0
 
 **Developer:** Dr. James Salveo Olarve  
 **Affiliation:** i-Nano Research Facility, De La Salle University Manila

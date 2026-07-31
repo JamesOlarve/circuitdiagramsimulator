@@ -6,7 +6,7 @@ authors:
   - family-names: Olarve
     given-names: "James Salveo"
     affiliation: "i-Nano Research Facility, De La Salle University Manila"
-version: "1.1"
+version: "1.1.0"
 abstract: >-
   A responsive, browser-based tool for drawing electrical schematics and
   analyzing basic linear DC circuits.
@@ -25,7 +25,7 @@ preferred-citation:
       given-names: "James Salveo"
       affiliation: "i-Nano Research Facility, De La Salle University Manila"
   title: "Circuit Builder & Simulator"
-  version: "1.1"
+  version: "1.1.0"
   year: 2026
   publisher:
     name: "i-Nano Research Facility, De La Salle University Manila"
