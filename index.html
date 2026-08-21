@@ -611,6 +611,8 @@ html, body {
    <header class="app-header bg-white border-b border-gray-200 px-4 py-2 flex items-center gap-2 shrink-0">
     <h1 id="app-title" class="app-title mono font-bold text-lg mr-4">Circuit Builder &amp; Simulator</h1>
     <div class="desktop-header-actions">
+     <a id="btn-home" class="toolbar-btn px-3 py-1.5 rounded text-sm font-medium flex items-center gap-1" href="../../index.html" onclick="confirmGoHome(event)" aria-label="Go to Educarios home page" title="Go to Educarios home page"> <i data-lucide="home" style="width:16px;height:16px"></i> Home </a>
+     <div class="h-6 w-px bg-gray-300"></div>
      <button id="btn-toggle-components" class="toolbar-btn px-3 py-1.5 rounded text-sm font-medium border border-gray-200" type="button" aria-controls="component-library-panel" aria-expanded="true" onclick="toggleResponsivePanel('components')">Components</button>
      <button id="btn-toggle-properties" class="toolbar-btn px-3 py-1.5 rounded text-sm font-medium border border-gray-200" type="button" aria-controls="properties-panel" aria-expanded="true" onclick="toggleResponsivePanel('properties')">Inspector</button>
      <button class="toolbar-btn px-3 py-1.5 rounded text-sm font-medium flex items-center gap-1" type="button" onclick="openDocumentationOverlay()"> <i data-lucide="file-text" style="width:16px;height:16px"></i> Documentation </button>
@@ -629,6 +631,8 @@ html, body {
      <div class="relative">
       <button id="btn-mobile-more" class="toolbar-btn rounded font-medium" type="button" aria-controls="mobile-more-menu" aria-expanded="false" onclick="toggleMobileMoreMenu()">More</button>
       <div id="mobile-more-menu" class="mobile-more-menu hidden bg-white border border-gray-200 rounded-lg shadow-xl py-1" role="menu" aria-label="More actions">
+       <a class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 block" href="../../index.html" onclick="closeMobileMoreMenu(); confirmGoHome(event);">Home</a>
+       <div class="my-1 border-t border-gray-200"></div>
        <button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50" type="button" onclick="runMobileMenuAction(openDocumentationOverlay)">Documentation</button>
        <button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50" type="button" onclick="runMobileMenuAction(resetWorkspace)">Reset workspace</button>
        <button class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50" type="button" onclick="runMobileMenuAction(saveProject)">Save project</button>
@@ -988,7 +992,18 @@ html, body {
      <p>Olarve, J. S. L. (2026). <em>Circuit Builder &amp; Simulator</em>. i-Nano Research Facility, De La Salle University Manila. Retrieved from https://www.inanolab.com/circuit.html</p>
     </div>
    </div>
-  </div><!-- Hidden file input for load --> <input type="file" id="file-input" accept=".json" class="hidden" onchange="handleFileLoad(event)">
+  </div>
+  <div id="home-confirm-overlay" class="fixed inset-0 z-[2000] hidden items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true" aria-labelledby="home-confirm-title">
+   <div class="bg-white rounded-lg shadow-xl p-6 max-w-sm w-full" tabindex="-1">
+    <div id="home-confirm-title" class="text-lg font-bold text-gray-900 mb-2">Leave Circuit Builder &amp; Simulator?</div>
+    <p class="text-sm text-gray-600 mb-5">This will take you to <strong>www.educarios.com</strong>, the Educarios home page. Any unsaved circuit changes will be lost.</p>
+    <div class="flex justify-end gap-2">
+     <button id="home-confirm-cancel" type="button" class="toolbar-btn px-3 py-1.5 rounded text-sm font-medium border border-gray-200">Cancel</button>
+     <button id="home-confirm-go" type="button" class="px-3 py-1.5 rounded text-sm font-medium bg-blue-600 text-white hover:bg-blue-700">Go to home page</button>
+    </div>
+   </div>
+  </div>
+  <!-- Hidden file input for load --> <input type="file" id="file-input" accept=".json" class="hidden" onchange="handleFileLoad(event)">
   <script>
 // ============ STATE ============
 let components = [];
@@ -2336,6 +2351,12 @@ document.addEventListener('keydown', (e) => {
     closeDocumentationOverlay();
     return;
   }
+  const homeConfirmOverlay = document.getElementById('home-confirm-overlay');
+  if (e.key === 'Escape' && homeConfirmOverlay && !homeConfirmOverlay.classList.contains('hidden')) {
+    e.preventDefault();
+    closeHomeConfirm(true);
+    return;
+  }
   if (e.key === 'Escape' && !document.getElementById('mobile-more-menu')?.classList.contains('hidden')) {
     e.preventDefault();
     closeMobileMoreMenu(true);
@@ -2861,6 +2882,33 @@ function closeDocumentationOverlay() {
 
 document.getElementById('documentation-overlay')?.addEventListener('click', (e) => {
   if (e.target.id === 'documentation-overlay') closeDocumentationOverlay();
+});
+
+// ============ HOME CONFIRMATION ============
+function confirmGoHome(event) {
+  if (event) event.preventDefault();
+  const overlay = document.getElementById('home-confirm-overlay');
+  if (!overlay) return;
+  const returnTarget = event ? event.currentTarget : document.activeElement;
+  overlay.classList.remove('hidden');
+  overlay.classList.add('flex');
+  activateFocusTrap(overlay.querySelector('[tabindex="-1"]') || overlay, returnTarget);
+}
+
+function closeHomeConfirm(restoreFocus = true) {
+  const overlay = document.getElementById('home-confirm-overlay');
+  if (!overlay) return;
+  overlay.classList.add('hidden');
+  overlay.classList.remove('flex');
+  deactivateFocusTrap(restoreFocus);
+}
+
+document.getElementById('home-confirm-cancel')?.addEventListener('click', () => closeHomeConfirm(true));
+document.getElementById('home-confirm-go')?.addEventListener('click', () => {
+  window.location.href = document.getElementById('btn-home').getAttribute('href');
+});
+document.getElementById('home-confirm-overlay')?.addEventListener('click', (e) => {
+  if (e.target.id === 'home-confirm-overlay') closeHomeConfirm(true);
 });
 
 function initToolbarIcons() {
